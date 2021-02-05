@@ -7,12 +7,16 @@
 
     <link rel="stylesheet" href="./style.css">
 </head>
-<body>
+<body class="darkmod">
 
     <header>
-        <img src="./assets/logo.svg" alt="Logo Dev Finance">
+        <div class="flex-container">
+            <img class="flex-item" src="./assets/logo.svg" alt="Logo Dev Finance">
+            <img class="darkmode-button flex-item" onclick="Darkmode.toggle()" src="./assets/darkmode.svg" alt="Botão modo escuro">
+        </div>
     </header>
 
+    
     <main class="container">
         <section id="balance">
             <h2 class="sr-only">Balanço</h2>

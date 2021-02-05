@@ -4,6 +4,12 @@ const Modal = {
     }
 }
 
+const Darkmode = {
+    toggle(){
+        document.querySelector('body').classList.toggle('darkmode')
+    }
+}
+
 const Storage = {
     
     get(){
