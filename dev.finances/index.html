@@ -7,9 +7,9 @@
 
     <link rel="stylesheet" href="./style.css">
 </head>
-<body class="darkmod">
+<body class="transition">
 
-    <header>
+    <header class="transition">
         <div class="flex-container">
             <img class="flex-item" src="./assets/logo.svg" alt="Logo Dev Finance">
             <img class="darkmode-button flex-item" onclick="Darkmode.toggle()" src="./assets/darkmode.svg" alt="Botão modo escuro">
@@ -21,7 +21,7 @@
         <section id="balance">
             <h2 class="sr-only">Balanço</h2>
             
-            <div class="card">
+            <div class="card transition">
                 <h3>
                     <span>Entradas</span>
                     <img src="./assets/income.svg" alt="Ícone de entradas financeiras">
@@ -29,7 +29,7 @@
                 <p id="incomeDisplay"></p>
             </div>
     
-            <div class="card">
+            <div class="card transition">
                 <h3>
                     <span>Saídas</span>
                     <img src="./assets/expense.svg" alt="Ícone de saídas financeiras">
@@ -37,7 +37,7 @@
                 <p id="expenseDisplay"></p>
             </div>
     
-            <div class="card total">
+            <div class="card transition total">
                 <h3>
                     <span>Total</span>
                     <img src="./assets/total.svg" alt="Ícone de total financeiro">
@@ -54,10 +54,10 @@
             <table id="data-table">
                 <thead>
                     <tr>
-                        <th>Descrição</th>
-                        <th>Valor</th>
-                        <th>Data</th>
-                        <th></th>
+                        <th class="transition">Descrição</th>
+                        <th class="transition">Valor</th>
+                        <th class="transition">Data</th>
+                        <th class="transition"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -93,7 +93,7 @@
         </div>
     </div>
 
-    <footer>
+    <footer class="transition">
         <p>dev.finance$</p>
     </footer>
 

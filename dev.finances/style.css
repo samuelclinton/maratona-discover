@@ -317,11 +317,9 @@ body.darkmode {
 }
 
 /* Transitions */
-body, header, .card, table th, table td, footer {
-    transition: background-color .5s, color .5s;
+body.transition, header.transition, .card.transition, table th.transition, table td.transition, footer.transition {
+    transition: background-color .25s ease-in-out, color .25s ease-in-out;
 }
-
-
 
 /* ************** Responsive */
 

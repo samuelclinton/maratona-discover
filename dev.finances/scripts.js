@@ -4,9 +4,37 @@ const Modal = {
     }
 }
 
+// Tema escuro com persistência, adicionado após o término das aulas para o concurso
 const Darkmode = {
+
+    // Método liga-desliga do tema escuro
     toggle(){
-        document.querySelector('body').classList.toggle('darkmode')
+
+        // Adicionando as transições de volta (ver DOM.removeTransition para a explicação do porque)
+        DOM.addTransition()
+
+        // Se as preferencias de tema escuro no localstorage forem null (vazio) ou off, sete para on e ligue o tema escuro
+        if (Storage.getDarkmode() == null || Storage.getDarkmode() == 'off'){
+            Storage.setDarkmodeOn()
+            document.querySelector('body').classList.add('darkmode')
+
+        }
+        // Se as preferencias forem on, sete o darkmode para off e desligue o tema escuro
+        else if (Storage.getDarkmode() == 'on') {
+            Storage.setDarkmodeOff()
+            document.querySelector('body').classList.remove('darkmode')
+        }
+    },
+
+    // Método que checa se o tema escuro está ligado quando a aplicação se inicia
+    check(){
+
+        // Se as preferencias de tema escuro não forem nulas, e estiver on,
+        // remova as transições pois elas causam um flash branco no reload e ligue o tema escuro
+        if (Storage.getDarkmode() != null && Storage.getDarkmode() == 'on'){
+            DOM.removeTransition()
+            document.querySelector('body').classList.add('darkmode')
+        }
     }
 }
 
@@ -18,6 +46,21 @@ const Storage = {
 
     set(transactions){
         localStorage.setItem('dev.finances:transactions', JSON.stringify(transactions))
+    },
+
+    // Define o tema escuro como ligado no localstorage
+    setDarkmodeOn(){
+        localStorage.setItem('dev.finances:darkmode', 'on')
+    },
+
+    // Define o tema escuro como desligado no localstorage
+    setDarkmodeOff(){
+        localStorage.setItem('dev.finances:darkmode', 'off')
+    },
+
+    // Pega o valor do tema escuro no localstorage
+    getDarkmode(){
+        return localStorage.getItem('dev.finances:darkmode')
     }
 }
 
@@ -99,28 +142,23 @@ const Utils = {
 
 const DOM = {
 
-    // Seleciona a tabela que vamos inserir os dados mais tarde
     transactionsContainer: document.querySelector('#data-table tbody'),
     
-    // Método de criação de tabela
     innerHTMLTransaction(transaction, index){
 
-        // Checa se a quantia é maior que 0 pra determinar se é income ou expense
         const CSSclass = transaction.amount > 0 ? "income" : "expense"
 
         const amount = Utils.formatCurrency(transaction.amount)
 
-        // Criação dos dados da linha da tabela
         const html = `
-        <td class="description">${transaction.description}</td>
-        <td class="${CSSclass}">${amount}</td>
-        <td class="date">${transaction.date}</td>
-        <td>
+        <td class="transition description">${transaction.description}</td>
+        <td class="transition ${CSSclass}">${amount}</td>
+        <td class="transition date">${transaction.date}</td>
+        <td class="transition">
             <img onclick="Transaction.remove(${index})" src="./assets/minus.svg" alt="Remover transação">
         </td>
         `
 
-        // Retorna os dados da linha dentro de uma variável
         return html
     },
 
@@ -147,6 +185,33 @@ const DOM = {
 
     clearTransactions(){
         this.transactionsContainer.innerHTML = ''
+    },
+
+    // Método que remove as transições pois ao ligar o tema quando atualizamos a página
+    // um flash branco indesejável aparece por alguns ms.
+    removeTransition(){
+
+        // Selecione todos os elementos com a classe transition
+        const elements = document.querySelectorAll('.transition')
+
+        // Para cada elemento com a classe transition, remova a classe transition e adicione notransition
+        elements.forEach(element => {
+            element.classList.remove('transition')
+            element.classList.add('notransition')
+        })
+    },
+
+    // Método que adiciona as transições de volta caso o usuário clique no botão pra alternar os temas
+    addTransition(){
+
+        // Selecione todos os elementos com a classe notransition
+        const elements = document.querySelectorAll('.notransition')
+
+        // Para cada elemento com a classe notransition, remova a classe notransition e adicione transition
+        elements.forEach(element => {
+            element.classList.remove('notransition')
+            element.classList.add('transition')
+        })
     }
 }
 
@@ -218,10 +283,12 @@ const Form = {
 
 const App = {
     init(){
-        
+
         Transaction.all.forEach(DOM.addTransaction)
         
         DOM.updateBalance()
+        
+        Darkmode.check()
 
         Storage.set(Transaction.all)
     },
