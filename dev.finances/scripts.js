@@ -10,9 +10,6 @@ const Darkmode = {
     // Método liga-desliga do tema escuro
     toggle(){
 
-        // Adicionando as transições de volta (ver DOM.removeTransition para a explicação do porque)
-        DOM.addTransition()
-
         // Se as preferencias de tema escuro no localstorage forem null (vazio) ou off, sete para on e ligue o tema escuro
         if (Storage.getDarkmode() == null || Storage.getDarkmode() == 'off'){
             Storage.setDarkmodeOn()
@@ -32,8 +29,15 @@ const Darkmode = {
         // Se as preferencias de tema escuro não forem nulas, e estiver on,
         // remova as transições pois elas causam um flash branco no reload e ligue o tema escuro
         if (Storage.getDarkmode() != null && Storage.getDarkmode() == 'on'){
+
+            // Remove as transições
             DOM.removeTransition()
+
+            // Ligue o tema escuro
             document.querySelector('body').classList.add('darkmode')
+
+            // Espere 300ms e adicione as transições de volta
+            setTimeout(DOM.addTransition, 300)
         }
     }
 }
@@ -180,14 +184,27 @@ const DOM = {
     updateBalance(){
         document.getElementById('incomeDisplay').innerHTML = Utils.formatCurrency(Transaction.incomes())
         document.getElementById('expenseDisplay').innerHTML = Utils.formatCurrency(Transaction.expenses())
+
+        this.negativeBalance(Utils.formatAmount(Transaction.total()))
+
         document.getElementById('totalDisplay').innerHTML = Utils.formatCurrency(Transaction.total())
+    },
+    
+    // Método que checa se o saldo é negativo e muda a aparência do card total para indicar
+    negativeBalance(total){
+
+        if (total < 0){
+            document.querySelector('.card.total').classList.add('negative')
+        } else {
+            document.querySelector('.card.total').classList.remove('negative')
+        }
     },
 
     clearTransactions(){
         this.transactionsContainer.innerHTML = ''
     },
 
-    // Método que remove as transições pois ao ligar o tema quando atualizamos a página
+    // Método que remove as transições, pois quando atualizamos a página com darkmode ligado
     // um flash branco indesejável aparece por alguns ms.
     removeTransition(){
 
@@ -201,7 +218,7 @@ const DOM = {
         })
     },
 
-    // Método que adiciona as transições de volta caso o usuário clique no botão pra alternar os temas
+    // Método que adiciona as transições de volta
     addTransition(){
 
         // Selecione todos os elementos com a classe notransition
@@ -287,8 +304,6 @@ const App = {
         Transaction.all.forEach(DOM.addTransaction)
         
         DOM.updateBalance()
-        
-        Darkmode.check()
 
         Storage.set(Transaction.all)
     },
@@ -299,5 +314,7 @@ const App = {
         App.init()
     }
 }
+
+Darkmode.check()
 
 App.init()

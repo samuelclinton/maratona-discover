@@ -147,6 +147,10 @@ header .darkmode-button {
     background: var(--green);
     color: white;
 }
+.card.total.negative {
+    background: #E83F5B;
+    color: white;
+}
 
 /* ************** Table */
 #transactions {
@@ -281,7 +285,10 @@ body.darkmode {
     background: var(--green);
     color: white;
 }
-
+.darkmode .card.total.negative {
+    background: #E83F5B;
+    color: white;
+}
 /* Table */
 .darkmode #data-table {
     color: var(--light-gray);
