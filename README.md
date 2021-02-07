@@ -18,9 +18,9 @@ Alguns features extras que estou adicionando até o prazo de entrega do projeto 
 ### :new_moon_with_face: Darkmode
 Um tema escuro extremamente elegante e confortável aos olhos, não é porque é meu filho não, mas eu não consigo mais nem usar o tema claro. :sunglasses:
 
-![Dark mode gif](darkmode.gif)
+![Dark mode gif](./img/darkmode.gif)
 
 ### :money_with_wings: Indicador de saldo negativo
 O card de total era estático e verde, pra mim isso indica o contrário do que um saldo negativo significa. Então agora temos um vermelhão pra você saber que talvez não deva mais comer aquele sushi caríssimo, ou deve, quem sou eu pra julgar! :man_shrugging:
 
-![Indicador de saldo gif](balance.gif)
+![Indicador de saldo gif](./img/balance.gif)
