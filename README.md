@@ -18,9 +18,15 @@ Alguns features extras que estou adicionando até o prazo de entrega do projeto 
 ### :new_moon_with_face: Darkmode
 Um tema escuro extremamente elegante e confortável aos olhos, não é porque é meu filho não, mas eu não consigo mais nem usar o tema claro. :sunglasses:
 
-![Dark mode gif](./img/darkmode.gif)
+![Gif tema escuro](./img/darkmode.gif)
 
 ### :money_with_wings: Indicador de saldo negativo
 O card de total era estático e verde, pra mim isso indica o contrário do que um saldo negativo significa. Então agora temos um vermelhão pra você saber que talvez não deva mais comer aquele sushi caríssimo, ou deve, quem sou eu pra julgar! :man_shrugging:
 
-![Indicador de saldo gif](./img/balance.gif)
+![Gif indicador de saldo](./img/balance.gif)
+
+### :frowning: Seletor de tipo de transação
+Uma mudança de UX, o usuário ter que digitar o sinal de negativo pra despesas era muito contra intuitivo, eu mesmo testando o saldo digitava positivo toda hora, então precisava automatizar isso, 
+resolvi isso com um menu com abas que muda o form que o usuário envia, isso gerou várias mudanças de back-end porque a aplicação foi escrita pra rodar com um form só na página, mas no fim ficou melhor IMO.
+
+![Gif seletor de tipo de transação](./img/transactionType.gif)

@@ -1,6 +1,30 @@
 const Modal = {
     toggle(){
         document.querySelector('.modal-overlay').classList.toggle('active')
+    },
+
+    // Método chamado toda vez que o usuário clicar em alguma aba do menu do modal
+    tabMenu(event, transaction){
+
+        // Pegar todos os forms do modal e esconder com a classe hidden
+        const tabContent = document.querySelectorAll('.tab-content')
+        
+        tabContent.forEach(tab => {
+            tab.classList.add('hidden')
+        })
+
+        // Pegar todas as tabs e remover a classe active
+        const tabLink = document.querySelectorAll('.tab-link')
+
+        tabLink.forEach(link => {
+            link.classList.remove('active')
+        })
+
+        // Mostrar a tab que o usuário clicou
+        document.getElementById(transaction).classList.remove('hidden')
+
+        // Ativar a tab do botão que enviou o evento
+        event.currentTarget.classList.add('active')
     }
 }
 
@@ -115,11 +139,23 @@ const Transaction = {
 
 const Utils = {
     
-    formatAmount(value){
+    formatAmount(value, transactionType){
 
-        value = value * 100
+        if (transactionType === 'income'){
+            
+            value = value * 100
+    
+            return Math.round(value)
 
-        return Math.round(value)
+        } else if (transactionType === 'expense'){
+
+            value -= value * 2
+
+            value *= 100
+
+            return Math.round(value)
+        }
+
     },
 
     formatDate(date){
@@ -129,6 +165,7 @@ const Utils = {
     },
 
     formatCurrency(value){
+
         const signal = Number(value) < 0 ? "-" : ""
 
         value = String(value).replace(/\D/g, "")
@@ -238,26 +275,41 @@ const Form = {
     amount: document.querySelector('input#amount'),
     date: document.querySelector('input#date'),
 
-    getValues(){
-        return {
-            description: this.description.value,
-            amount: this.amount.value,
-            date: this.date.value
+    descriptionExpense: document.querySelector('input#descriptionExpense'),
+    amountExpense: document.querySelector('input#amountExpense'),
+    dateExpense: document.querySelector('input#dateExpense'),
+
+    getValues(transactionType){
+
+        if (transactionType === 'income'){
+            return {
+                description: this.description.value,
+                amount: this.amount.value,
+                date: this.date.value
+            }
+        } else if (transactionType === 'expense') {
+            return {
+                description: this.descriptionExpense.value,
+                amount: this.amountExpense.value,
+                date: this.dateExpense.value
+            }
         }
+
+        
     },
 
-    validateFields(){
-        const {description, amount, date} = this.getValues()
+    validateFields(transactionType){
+        const {description, amount, date} = this.getValues(transactionType)
         
         if(description.trim() === '' || amount.trim() === '' || date.trim() === ''){
             throw new Error('Por favor preencha todos os campos')
         }
     },
     
-    formatValues(){
-        let {description, amount, date} = this.getValues()
+    formatValues(transactionType){
+        let {description, amount, date} = this.getValues(transactionType)
 
-        amount = Utils.formatAmount(amount)
+        amount = Utils.formatAmount(amount, transactionType)
         date = Utils.formatDate(date)
 
         return {
@@ -267,25 +319,32 @@ const Form = {
         }
     },
 
-    clearFields(){
-        this.description.value = ''
-        this.amount.value = ''
-        this.date.value = ''
+    clearFields(transactionType){
+        if (transactionType === 'income'){
+            this.description.value = ''
+            this.amount.value = ''
+            this.date.value = ''
+
+        } else if (transactionType === 'expense') {
+            this.descriptionExpense.value = ''
+            this.amountExpense.value = ''
+            this.dateExpense.value = ''
+        }
     },
 
-    submit(event){
+    submit(event, transactionType){
 
         event.preventDefault()
 
         try {
 
-            this.validateFields()
+            this.validateFields(transactionType)
 
-            const transaction  = this.formatValues()
+            const transaction  = this.formatValues(transactionType)
 
             Transaction.add(transaction)
 
-            this.clearFields()
+            this.clearFields(transactionType)
 
             Modal.toggle()
 
